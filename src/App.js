@@ -1,25 +1,41 @@
-import logo from './logo.svg';
+
+import { useEffect, useState } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const App = ()=> {
+  const [apiId, setApiId] = useState('1');
+  const [data,setData] = useState({})
+  
+  console.log(apiId);
+  console.log(data);
+ 
+
+  useEffect(()=>{
+    console.log("Use effect running...");
+    
+    if (apiId.length > 0) {
+      console.log("useEffect if condition");
+
+      const apiCall = async() => {
+        const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${apiId}`)
+        const data = await res.json()
+
+        if(data) {
+          setData(data)
+        }
+
+      }
+
+      apiCall()
+      
+    }
+  },[apiId])
+
+  return(
+    <div>
+      <input type='text' value={apiId} onChange={(e)=> {setApiId(e.target.value)}} placeholder='enter id'></input>
     </div>
-  );
+  )
 }
 
 export default App;
